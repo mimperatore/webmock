@@ -103,7 +103,7 @@ if defined?(Manticore)
           end
 
           def generate_manticore_response(webmock_response)
-            raise Manticore::ConnectTimeout if webmock_response.should_timeout
+            webmock_response.on_timeout { raise Manticore::ConnectTimeout }
 
             Manticore::StubbedResponse.stub(
               code: webmock_response.status[0],

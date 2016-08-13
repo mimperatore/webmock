@@ -70,14 +70,25 @@ module WebMock
       @should_timeout == true
     end
 
+    attr_reader :timeout_delay
+
+    def on_timeout(&block)
+      if @should_timeout
+        sleep(@timeout_delay) if @timeout_delay
+        block.call if block
+        true
+      end
+    end
+
     def options=(options)
       options = WebMock::Util::HashKeysStringifier.stringify_keys!(options)
-      HashValidator.new(options).validate_keys('headers', 'status', 'body', 'exception', 'should_timeout')
+      HashValidator.new(options).validate_keys('headers', 'status', 'body', 'exception', 'should_timeout', 'timeout_delay')
       self.headers = options['headers']
       self.status = options['status']
       self.body = options['body']
       self.exception = options['exception']
       @should_timeout = options['should_timeout']
+      @timeout_delay = options['timeout_delay']
     end
 
     def evaluate(request_signature)
@@ -95,6 +106,7 @@ module WebMock
       self.status == other.status &&
       self.exception == other.exception &&
       self.should_timeout == other.should_timeout
+      self.timeout_delay == other.timeout_delay
     end
 
     private

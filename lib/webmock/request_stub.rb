@@ -36,8 +36,8 @@ module WebMock
     end
     alias_method :and_raise, :to_raise
 
-    def to_timeout
-      @responses_sequences << ResponsesSequence.new([ResponseFactory.response_for(should_timeout: true)])
+    def to_timeout(delay=nil)
+      @responses_sequences << ResponsesSequence.new([ResponseFactory.response_for(should_timeout: true, timeout_delay: delay)])
       self
     end
     alias_method :and_timeout, :to_timeout

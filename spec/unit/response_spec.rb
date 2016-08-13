@@ -27,7 +27,7 @@ describe WebMock::Response do
   end
 
   it "should raise an error when initialized with unknown option" do
-    expect { WebMock::Response.new(foo: "bar") }.to raise_error('Unknown key: "foo". Valid keys are: "headers", "status", "body", "exception", "should_timeout"')
+    expect { WebMock::Response.new(foo: "bar") }.to raise_error('Unknown key: "foo". Valid keys are: "headers", "status", "body", "exception", "should_timeout", "timeout_delay"')
   end
 
   it "should report normalized headers" do
@@ -86,6 +86,11 @@ describe WebMock::Response do
     it "should know if it should timeout" do
       @response = WebMock::Response.new(should_timeout: true)
       expect(@response.should_timeout).to be_truthy
+    end
+
+    it "should know for how long to timeout" do
+      @response = WebMock::Response.new(timeout_delay: 0.5)
+      expect(@response.timeout_delay).to eq(0.5)
     end
 
     it "should not timeout by default" do

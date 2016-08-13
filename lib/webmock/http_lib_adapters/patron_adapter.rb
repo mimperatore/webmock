@@ -98,7 +98,7 @@ if defined?(::Patron)
         end
 
         def self.build_patron_response(webmock_response, default_response_charset)
-          raise ::Patron::TimeoutError if webmock_response.should_timeout
+          webmock_response.on_timeout { raise ::Patron::TimeoutError }
           webmock_response.raise_error_if_any
 
           header_fields = (webmock_response.headers || []).map { |(k, vs)| Array(vs).map { |v| "#{k}: #{v}" } }.flatten

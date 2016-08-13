@@ -131,6 +131,11 @@ describe WebMock::RequestStub do
        expect(@request_stub.response.should_timeout).to be_truthy
      end
 
+     it "should assign response with specified timeout delay" do
+       @request_stub.to_timeout(0.5)
+       expect(@request_stub.response.timeout_delay).to eq(0.5)
+     end
+
      it "should assign sequence of responses with response with timeout" do
        @request_stub.to_return(body: "abc").then.to_timeout
        expect(@request_stub.response.body).to eq("abc")

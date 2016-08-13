@@ -46,6 +46,16 @@ shared_context "declared responses" do |*adapter_info|
       }.to raise_error(client_timeout_exception_class)
     end
 
+    it "should timeout after the specified delay" do
+      delay = 0.1
+      stub_request(:get, "www.example.com").to_timeout(delay)
+      start = Time.now
+      expect {
+        http_request(:get, "http://www.example.com/")
+      }.to raise_error(client_timeout_exception_class)
+      expect(Time.now - start).to be > delay
+    end
+
     it "should timeout after returning declared successful response" do
       stub_request(:get, "www.example.com").to_return(body: "abc").then.to_timeout
       expect(http_request(:get, "http://www.example.com/").body).to eq("abc")

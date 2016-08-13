@@ -125,7 +125,7 @@ if defined?(Excon)
         end
 
         def self.real_response(mock)
-          raise Excon::Errors::Timeout if mock.should_timeout
+          mock.on_timeout { raise Excon::Errors::Timeout }
           mock.raise_error_if_any
           {
             body: mock.body,

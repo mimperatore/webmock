@@ -34,7 +34,7 @@ module HTTP
 
       return unless webmock_response
 
-      raise_timeout_error if webmock_response.should_timeout
+      webmock_response.on_timeout { raise_timeout_error }
       webmock_response.raise_error_if_any
 
       invoke_callbacks(webmock_response, real_request: false)

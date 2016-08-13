@@ -168,8 +168,7 @@ module WebMock
 
           response.extend Net::WebMockHTTPResponse
 
-          raise Timeout::Error, "execution expired" if webmock_response.should_timeout
-
+          webmock_response.on_timeout { raise Timeout::Error, "execution expired" }
           webmock_response.raise_error_if_any
 
           yield response if block_given?

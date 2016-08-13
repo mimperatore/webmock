@@ -147,7 +147,7 @@ if defined?(Curl)
       end
 
       def build_curb_response(webmock_response)
-        raise Curl::Err::TimeoutError if webmock_response.should_timeout
+        webmock_response.on_timeout { raise Curl::Err::TimeoutError }
         webmock_response.raise_error_if_any
 
         @body_str = webmock_response.body

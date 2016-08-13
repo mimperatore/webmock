@@ -88,7 +88,7 @@ if defined?(Typhoeus)
         end
 
         def self.generate_typhoeus_response(request_signature, webmock_response)
-          response = if webmock_response.should_timeout
+          response = if webmock_response.on_timeout
             ::Typhoeus::Response.new(
               code: 0,
               status_message: "",
